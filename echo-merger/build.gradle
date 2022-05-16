@@ -1,0 +1,65 @@
+plugins {
+    id 'org.springframework.boot' version '2.6.6'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'com.google.cloud.tools.jib' version '3.2.1'
+    id 'java'
+}
+
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+ext {
+    set('springCloudGcpVersion', "3.2.1")
+    set('springCloudVersion', "2021.0.1")
+}
+
+dependencies {
+    implementation project(':lib-geo')
+    implementation project(':lib-data')
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
+    implementation 'org.springframework.cloud:spring-cloud-starter-stream-rabbit'
+//	implementation 'org.springframework.cloud:spring-cloud-stream'
+//	implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
+    implementation 'org.springframework.cloud:spring-cloud-sleuth-zipkin'
+    implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+//    implementation 'com.google.cloud:spring-cloud-gcp-starter-storage'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.gdal:gdal:3.4.0'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.cloud:spring-cloud-sleuth-zipkin'
+    implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+
+dependencyManagement {
+    imports {
+        mavenBom "com.google.cloud:spring-cloud-gcp-dependencies:${springCloudGcpVersion}"
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+jib {
+    from {
+        image = 'osgeo/gdal:ubuntu-full-3.4.0'
+    }
+//    to {
+//        image = 'europe-west1-docker.pkg.dev/propane-surfer-340509/docker/merger'
+//        credHelper = 'gcloud'
+//    }
+    to {
+        image = 'processing/echo-merger'
+        allowInsecureRegistries = true
+    }
+}

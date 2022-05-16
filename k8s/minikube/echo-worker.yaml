@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo-worker-deployment
+  namespace: processing
+  labels:
+    app: echo-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echo-worker
+  template:
+    metadata:
+      labels:
+        app: echo-worker
+    spec:
+      containers:
+        - name: echo-worker
+          image: processing/echo-worker:latest
+          imagePullPolicy: Never
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "dev"
+            - name: CPL_DEBUG
+              value: "ON"
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: "/app/resources/gcp.json"
+            - name: CPL_VSIL_USE_TEMP_FILE_FOR_RANDOM_WRITE
+              value: "YES"
+          volumeMounts:
+            - mountPath: /data
+              name: data-volume
+      volumes:
+        - name: data-volume
+          hostPath:
+            path: /data
+#          livenessProbe:
+#            httpGet:
+#              path: /actuator/health/liveness
+#              port: 8092
+#            initialDelaySeconds: 60
+#            periodSeconds: 5
+#          readinessProbe:
+#            httpGet:
+#              path: /actuator/health/readiness
+#              port: 8092
+#            initialDelaySeconds: 60
+#            periodSeconds: 5

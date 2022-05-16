@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo-orchestrator-deployment
+  namespace: processing
+  labels:
+    app: echo-orchestrator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echo-orchestrator
+  template:
+    metadata:
+      labels:
+        app: echo-orchestrator
+    spec:
+      containers:
+        - name: echo-orchestrator
+          image: processing/echo-orchestrator:latest
+          imagePullPolicy: Never
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "dev"
+          volumeMounts:
+            - mountPath: /data
+              name: data-volume
+      volumes:
+        - name: data-volume
+          hostPath:
+            path: /data
+
+
+#          livenessProbe:
+#            httpGet:
+#              path: /actuator/health/liveness
+#              port: 8090
+#            initialDelaySeconds: 60
+#            periodSeconds: 5
+#          readinessProbe:
+#            httpGet:
+#              path: /actuator/health/readiness
+#              port: 8090
+#            initialDelaySeconds: 60
+#            periodSeconds: 5

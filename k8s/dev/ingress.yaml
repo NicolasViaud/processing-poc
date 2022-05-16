@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: processing-ingress
+  namespace: processing
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /controller/
+            pathType: Prefix
+            backend:
+              service:
+                name: controller-service
+                port:
+                  number: 8080
+          - path: /tracker
+            pathType: Prefix
+            backend:
+              service:
+                name: tracker-service
+                port:
+                  number: 8081
+          - path: /ui
+            pathType: Prefix
+            backend:
+              service:
+                name: ui-service
+                port:
+                  number: 80

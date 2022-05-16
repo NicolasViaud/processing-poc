@@ -1,0 +1,16 @@
+<mat-drawer-container class="example-container">
+  <mat-drawer mode="side" opened>
+    <ul>
+      <li><a routerLink="/home" routerLinkActive="active">Home</a></li>
+      <li><a routerLink="/tracker" routerLinkActive="active">Tracker</a></li>
+      <li><a routerLink="/embedded/controller" routerLinkActive="active">Controller API Doc</a></li>
+      <li><a routerLink="/embedded/tracker" routerLinkActive="active">Tracker API Doc</a></li>
+      <li><a routerLink="/embedded/pgadmin" routerLinkActive="active">pgAdmin</a></li>
+      <li><a routerLink="/embedded/rabbitmq" routerLinkActive="active">RabbitMQ Management</a></li>
+      <li><a routerLink="/embedded/zipkin" routerLinkActive="active">Zipkin</a></li>
+    </ul>
+  </mat-drawer>
+  <mat-drawer-content>
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

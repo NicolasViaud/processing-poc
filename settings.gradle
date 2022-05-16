@@ -1,0 +1,14 @@
+rootProject.name = 'processing'
+
+include 'lib-geo'
+include 'lib-data'
+include 'lib-orchestrator'
+include 'tracker'
+include 'controller'
+include 'echo-orchestrator'
+include 'echo-worker'
+include 'echo-merger'
+include 'test-gdal'
+include 'test-database'
+
+
