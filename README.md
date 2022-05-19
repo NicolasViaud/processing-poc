@@ -136,12 +136,15 @@ kubectl apply -f k8s/minikube/echo-worker.yaml
 kubectl apply -f k8s/minikube/echo-merger.yaml
 kubectl apply -f k8s/minikube/tracker.yaml
 
-docker build -t ui-admin -f processing/ui-admin/Dockerfile ui-admin
-kubectl apply -f k8s/dev/ui-admin.yaml
+docker build -t processing/ui-admin -f ui-admin/Dockerfile ui-admin
+kubectl apply -f k8s/minikube/ui-admin.yaml
+kubectl apply -f k8s/minikube/ingress.yaml
 
 minikube tunnel
 minikube dashboard
 ```
+
+Open [Admin UI](http://admin-127.0.0.1.nip.io/)
 
 ### GCP deployment
 
@@ -165,12 +168,15 @@ kubectl apply -f k8s/dev/echo-worker.yaml
 kubectl apply -f k8s/dev/echo-merger.yaml
 kubectl apply -f k8s/dev/tracker.yaml
 
-docker build -t ui-admin -f processing/ui-admin/Dockerfile ui-admin
-docker tag -t ui-admin eu.gcr.io/processing/ui-admin:latest
+docker build -t processing/ui-admin -f ui-admin/Dockerfile ui-admin
+docker tag -t processing/ui-admin eu.gcr.io/processing/ui-admin:latest
 docker push eu.gcr.io/processing/ui-admin:latest
 
 
 kubectl apply -f k8s/dev/ui-admin.yaml
+
+htpasswd -c k8s/dev/basic-auth processing
+kubectl create secret generic basic-auth --from-file=k8s/dev/basic-auth -n processing
 kubectl apply -f k8s/dev/ingress.yaml
 ```
 

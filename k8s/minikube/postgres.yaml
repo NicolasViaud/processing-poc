@@ -34,7 +34,28 @@ spec:
     app: postgres
   ports:
     - port: 5432
-  type: LoadBalancer
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pgadmin-configmap
+  namespace: infra
+data:
+  servers.json: |
+    {
+        "Servers": {
+            "1": {
+                "Name": "processing",
+                "Group": "Servers",
+                "Port": 5432,
+                "Username": "postgres",
+                "Host": "postgres-service.infra.svc.cluster.local",
+                "SSLMode": "prefer",
+                "MaintenanceDB": "postgres"
+            }
+        }
+    }
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -63,6 +84,28 @@ spec:
               value: "nicolas.viaud84@gmail.com"
             - name: PGADMIN_DEFAULT_PASSWORD
               value: "admin"
+            - name: PGADMIN_CONFIG_X_FRAME_OPTIONS
+              value: '""'
+          volumeMounts:
+            - name: pgadmin-servers-file
+              mountPath: /pgadmin4/servers.json
+              subPath: servers.json
+      volumes:
+        - name: pgadmin-servers-file
+          configMap:
+            name: pgadmin-configmap
+#          livenessProbe:
+#            httpGet:
+#              path: /misc/ping
+#              port: 80
+#            initialDelaySeconds: 30
+#            periodSeconds: 10
+#          readinessProbe:
+#            httpGet:
+#              path: /misc/ping
+#              port: 80
+#            initialDelaySeconds: 10
+#            periodSeconds: 10
 ---
 apiVersion: v1
 kind: Service
@@ -75,4 +118,3 @@ spec:
   ports:
     - port: 5431
       targetPort: 80
-  type: LoadBalancer

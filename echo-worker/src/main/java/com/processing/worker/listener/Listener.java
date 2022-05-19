@@ -16,7 +16,8 @@ public class Listener {
 
     private final EchoWorkerService echoWorkerService;
 
-    @RabbitListener(queues = "queue.processing.echo.worker"/*, concurrency = "8"*/)
+
+    @RabbitListener(queues = "queue.processing.echo.worker", concurrency = "${concurrent.worker}")
     public void receiveMessage(Message<EchoWorkerMessage> message, Channel channel) {
         log.debug("Received <" + message + ">");
 

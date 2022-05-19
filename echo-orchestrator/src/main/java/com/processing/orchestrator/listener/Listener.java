@@ -38,7 +38,7 @@ public class Listener {
                 payload.getAoi());
     }
 
-    @RabbitListener(queues = "queue.processing.echo.worker.callback", concurrency = "8")
+    @RabbitListener(queues = "queue.processing.echo.worker.callback", concurrency = "${concurrent.worker.callback}")
     public void receiveWorkerCallbackMessage(Message<EchoWorkerCallbackMessage> message) {
         log.debug("Received callback {}", message);
         errorGeneratorService.onWorkerCallbackMessage();

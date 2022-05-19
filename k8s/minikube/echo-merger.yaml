@@ -28,6 +28,8 @@ spec:
               value: "/app/resources/gcp.json"
             - name: CPL_VSIL_USE_TEMP_FILE_FOR_RANDOM_WRITE
               value: "YES"
+            - name: DATA.LOCAL
+              value: "true"
           volumeMounts:
             - mountPath: /data
               name: data-volume
@@ -39,11 +41,12 @@ spec:
 #            httpGet:
 #              path: /actuator/health/liveness
 #              port: 8093
-#            initialDelaySeconds: 60
-#            periodSeconds: 5
+#            initialDelaySeconds: 40
+#            periodSeconds: 10
 #          readinessProbe:
 #            httpGet:
 #              path: /actuator/health/readiness
 #              port: 8093
-#            initialDelaySeconds: 60
-#            periodSeconds: 5
+#            initialDelaySeconds: 10
+#            periodSeconds: 10
+

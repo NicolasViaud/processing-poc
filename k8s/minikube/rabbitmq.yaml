@@ -7,8 +7,6 @@ metadata:
     rabbitmq.com/topology-allowed-namespaces: "processing"
 spec:
   replicas: 1
-  service:
-    type: LoadBalancer
   rabbitmq:
     additionalPlugins:
       - rabbitmq_management
