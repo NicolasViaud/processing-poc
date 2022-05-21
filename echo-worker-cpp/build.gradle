@@ -1,6 +1,8 @@
+//https://docs.gradle.org/current/userguide/building_cpp_projects.html
+//https://docs.gradle.org/current/samples/sample_building_cpp_applications.html
+
 plugins {
     id 'cpp-application'
-
     id 'cpp-unit-test'
 }
 
