@@ -1,4 +1,4 @@
-#include "app.h"
+#include "../include/app.h"
 #include <cassert>
 
 int main() {
