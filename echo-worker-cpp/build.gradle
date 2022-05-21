@@ -1,0 +1,9 @@
+plugins {
+    id 'cpp-application'
+
+    id 'cpp-unit-test'
+}
+
+application {
+    targetMachines.add(machines.linux.x86_64)
+}
