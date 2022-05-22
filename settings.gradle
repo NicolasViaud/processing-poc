@@ -2,7 +2,6 @@ rootProject.name = 'processing'
 
 include 'lib-geo'
 include 'lib-data'
-//include 'lib-rabbitmq-client'
 include 'lib-orchestrator'
 include 'tracker'
 include 'controller'
